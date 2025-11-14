@@ -1,9 +1,13 @@
 [package]
-name = "nft_sample"
+name = "charity_bet"
 version = "0.0.1"
 edition = "2024.beta"
 
 [addresses]
-nft_sample = "0x0"
+charity_bet = "0x0"
+dapps_workshop = "0x0"
 
-[dependencies]
+[dependencies.Sui]
+git = "https://github.com/MystenLabs/sui.git"
+subdir = "crates/sui-framework/packages/sui-framework"
+rev = "framework/testnet"
