@@ -2,7 +2,7 @@
 
 This is a Sui-based dApp that collects funds before a match and automatically sends the pooled money to predefined addresses depending on the match result.
 
-[SuiOne_Relation.pdf](https://github.com/user-attachments/files/23560172/SuiOne_Relation.pdf)
+<img width="2317" height="1211" alt="SuiOne_Relation" src="https://github.com/user-attachments/assets/ea13d90f-0a55-49b6-8f97-281f81c8921d" />
 
 ## Directory structure
 
