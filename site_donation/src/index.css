@@ -112,6 +112,16 @@ body {
   border: 1px solid var(--border-color);
 }
 
+/* ファイターの下に表示するベットボード */
+.bet-board {
+  margin-top: 20px;
+  padding: 14px 16px;
+  border-radius: 16px;
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+}
+
+
 /* ファイター情報 */
 .fighter-column {
   display: flex;
@@ -267,11 +277,11 @@ body {
 }
 
 .totals-donut-swatch-a {
-  background: var(--accent-red);
+  background: var(--accent-blue);
 }
 
 .totals-donut-swatch-b {
-  background: var(--accent-blue);
+  background: var(--accent-red);
 }
 
 /* ベットフォーム */

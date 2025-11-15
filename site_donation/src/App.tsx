@@ -100,9 +100,9 @@ function App() {
       return;
     }
 
-    const winner: Side = match.totalA >= match.totalB ? "A" : "B";
-    setWinnerSide(winner);
-    const winnerName = winner === "A" ? match.fighterAName : match.fighterBName;
+    const w: Side = match.totalA >= match.totalB ? "A" : "B";
+    setWinnerSide(w);
+    const winnerName = w === "A" ? match.fighterAName : match.fighterBName;
     setMessage(`（デモ）試合を終了しました。勝者は ${winnerName} です。`);
   };
 
@@ -123,7 +123,7 @@ function App() {
         {/* メッセージ */}
         {message && <div className="message">{message}</div>}
 
-        {/* マッチカード */}
+        {/* マッチ＋ベット＋円グラフ */}
         <section className="match-section">
           <div className="match-header">
             <span className="match-label">CURRENT BOUT</span>
@@ -197,13 +197,61 @@ function App() {
             </div>
           </div>
 
-          {/* 円グラフ（CSS は 240px に調整済みのものをそのまま使う） */}
+          {/* ▼ ベットボード（カードのすぐ下） */}
+          <div className="bet-board">
+            <h2 className="section-title">チャリティにベットする</h2>
+            <p className="section-caption">
+              応援するファイターを選び、ベットしたい SUI の額を入力してください。
+            </p>
+
+            <div className="selected-summary">
+              <span className="selected-label">選択中のファイター：</span>
+              {selectedFighterName ? (
+                <>
+                  <span className="selected-name">{selectedFighterName}</span>
+                  {selectedRegion && (
+                    <span className="selected-region">
+                      （寄付先の国：{selectedRegion}）
+                    </span>
+                  )}
+                </>
+              ) : (
+                <span className="selected-none">まだ選択されていません</span>
+              )}
+            </div>
+
+            <div className="form-row">
+              <label className="input-label">
+                ベット額（SUI）
+                <input
+                  type="number"
+                  className="input"
+                  min={0}
+                  step={0.1}
+                  value={amount}
+                  onChange={(e) => setAmount(e.target.value)}
+                  placeholder="例: 0.5"
+                />
+              </label>
+            </div>
+
+            <button
+              className="primary-button"
+              onClick={handleBet}
+              disabled={!side || !!winnerSide}
+            >
+              チャリティにベットする
+            </button>
+          </div>
+
+          {/* ▼ 円グラフ（結果として見るゾーン） */}
           <div className="totals-donut-area">
             <div className="totals-donut-wrapper">
               <div
                 className="totals-donut"
                 style={{
-                  background: `conic-gradient(var(--accent-red) 0 ${percentA}%, var(--accent-blue) ${percentA}% 100%)`,
+                  // A = 青（accent-blue）, B = 赤（accent-red）
+                  background: `conic-gradient(var(--accent-red) 0 ${percentB}%, var(--accent-blue) ${percentB}% 100%)`,
                 }}
               >
                 <div className="totals-donut-center">
@@ -214,18 +262,25 @@ function App() {
                 </div>
               </div>
 
+              {/* ▼ 凡例 */}
               <div className="totals-donut-legend">
+                {/* A（左） */}
                 <div className="totals-donut-legend-item">
                   <span className="totals-donut-swatch totals-donut-swatch-a" />
                   <span>
-                    {match.fighterAName}: {percentA}%<br />
+                    {match.fighterAName}: {match.totalA.toFixed(2)} SUI 
+                    ({percentA}%)
+                    <br />
                     寄付先の国：{match.charityARegion}
                   </span>
                 </div>
+                {/* B（右） */}
                 <div className="totals-donut-legend-item">
                   <span className="totals-donut-swatch totals-donut-swatch-b" />
                   <span>
-                    {match.fighterBName}: {percentB}%<br />
+                    {match.fighterBName}: {match.totalB.toFixed(2)} SUI
+                    ({percentB}%)
+                    <br />
                     寄付先の国：{match.charityBRegion}
                   </span>
                 </div>
@@ -270,54 +325,6 @@ function App() {
             </div>
           </section>
         )}
-
-        {/* ベットフォーム */}
-        <section className="bet-section">
-          <h2 className="section-title">チャリティにベットする</h2>
-          <p className="section-caption">
-            応援するファイターを選び、ベットしたい SUI の額を入力してください。
-          </p>
-
-          {/* 選択中のファイター表示 */}
-          <div className="selected-summary">
-            <span className="selected-label">選択中のファイター：</span>
-            {selectedFighterName ? (
-              <>
-                <span className="selected-name">{selectedFighterName}</span>
-                {selectedRegion && (
-                  <span className="selected-region">
-                    （寄付先の国：{selectedRegion}）
-                  </span>
-                )}
-              </>
-            ) : (
-              <span className="selected-none">まだ選択されていません</span>
-            )}
-          </div>
-
-          <div className="form-row">
-            <label className="input-label">
-              ベット額（SUI）
-              <input
-                type="number"
-                className="input"
-                min={0}
-                step={0.1}
-                value={amount}
-                onChange={(e) => setAmount(e.target.value)}
-                placeholder="例: 0.5"
-              />
-            </label>
-          </div>
-
-          <button
-            className="primary-button"
-            onClick={handleBet}
-            disabled={!side || !!winnerSide}
-          >
-            チャリティにベットする
-          </button>
-        </section>
       </div>
     </div>
   );
